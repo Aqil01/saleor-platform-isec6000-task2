@@ -1,0 +1,9 @@
+# common-configmap.yml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: saleor-common-config
+data:
+  DASHBOARD_URL: "http://localhost:9002/"
+  ALLOWED_HOSTS: "localhost,api"
+  JAEGER_AGENT_HOST: "jaeger"

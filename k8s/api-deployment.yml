@@ -1,0 +1,34 @@
+# api-deployment.yml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: api-deployment
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: api
+  template:
+    metadata:
+      labels:
+        app: api
+    spec:
+      containers:
+        - name: api
+          image: ghcr.io/saleor/saleor:3.20
+          ports:
+            - containerPort: 8000
+          env:
+            - name: JAEGER_AGENT_HOST
+              value: "jaeger"
+            - name: DASHBOARD_URL
+              value: "http://localhost:9002/"
+            - name: ALLOWED_HOSTS
+              value: "localhost,api"
+          volumeMounts:
+            - name: saleor-media
+              mountPath: /app/media
+      volumes:
+        - name: saleor-media
+          persistentVolumeClaim:
+            claimName: saleor-media-pvc

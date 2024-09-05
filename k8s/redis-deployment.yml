@@ -1,0 +1,27 @@
+# redis-deployment.yml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: redis-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: redis
+  template:
+    metadata:
+      labels:
+        app: redis
+    spec:
+      containers:
+        - name: redis
+          image: library/redis:7.0-alpine
+          ports:
+            - containerPort: 6379
+          volumeMounts:
+            - name: saleor-redis
+              mountPath: /data
+      volumes:
+        - name: saleor-redis
+          persistentVolumeClaim:
+            claimName: saleor-redis-pvc
