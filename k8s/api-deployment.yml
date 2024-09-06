@@ -18,13 +18,9 @@ spec:
           image: ghcr.io/saleor/saleor:3.20
           ports:
             - containerPort: 8000
-          env:
-            - name: JAEGER_AGENT_HOST
-              value: "jaeger"
-            - name: DASHBOARD_URL
-              value: "http://localhost:9002/"
-            - name: ALLOWED_HOSTS
-              value: "localhost,api"
+          envFrom:
+            - configMapRef:
+                name: saleor-common-config
           volumeMounts:
             - name: saleor-media
               mountPath: /app/media
@@ -32,3 +28,4 @@ spec:
         - name: saleor-media
           persistentVolumeClaim:
             claimName: saleor-media-pvc
+

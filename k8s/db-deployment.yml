@@ -14,19 +14,22 @@ spec:
         app: db
     spec:
       containers:
-        - name: db
-          image: library/postgres:15-alpine
-          ports:
-            - containerPort: 5432
-          env:
-            - name: POSTGRES_USER
-              value: "saleor"
-            - name: POSTGRES_PASSWORD
-              value: "saleor"
-          volumeMounts:
-            - name: saleor-db
-              mountPath: /var/lib/postgresql/data
-      volumes:
+      - name: db
+        image: library/postgres:15-alpine
+        ports:
+        - containerPort: 5432
+        env:
+        - name: POSTGRES_USER
+          value: "saleor"
+        - name: POSTGRES_PASSWORD
+          value: "saleor"
+        - name: PGDATA
+          value: "/var/lib/postgresql/data/pgdata"
+        volumeMounts:
         - name: saleor-db
-          persistentVolumeClaim:
-            claimName: saleor-db-pvc
+          mountPath: /var/lib/postgresql/data
+      volumes:
+      - name: saleor-db
+        persistentVolumeClaim:
+          claimName: saleor-db-pvc
+
